@@ -3,6 +3,7 @@ package ru.geekbrains;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -19,11 +20,20 @@ public class WebServer {
                     )
             );
 
+            PrintWriter output = new PrintWriter(socket.getOutputStream());
+
             while(!input.ready());
 
             while (input.ready()) {
                 System.out.println(input.readLine());
             }
+
+            output.println("HTTP/1.1 200 OK");
+            output.println("Content-Type: text/html; charset=utf-8");
+            output.println();
+            output.println("<h1>Hello, userName</h1>");
+            output.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
